@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "axios": "^0.15.3",
+    "bluebird": "^3.5.0",
+    "cheerio": "^0.22.0",
+    "http": "^0.0.0",
+    "mkdirp": "^0.5.1",
+    "striptags": "^3.0.1"
+  },
+  "name": "dl_xvideo_img",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "description": "Simple script to dl images from xvideos.com",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": ""
+}
