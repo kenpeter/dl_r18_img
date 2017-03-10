@@ -6,8 +6,9 @@ const Promise = require('bluebird');
 const mkdirp = require('mkdirp');
 const util = require('util');
 
-const theList = 'http://www.r18.com/videos/vod/movies/list/id=45425/pagesize=30/price=all/sort=popular/type=studio/page=';
-const theListLength = 17;
+//const theList = 'http://www.r18.com/videos/vod/movies/list/id=45425/pagesize=30/price=all/sort=popular/type=studio/page=';
+const theList = 'http://www.r18.com/videos/vod/movies/list/id=2001/pagesize=30/price=all/sort=popular/type=category/page=1/';
+const theListLength = 1654;
 
 
 function genEachPage(theList, theListLength) {
@@ -18,21 +19,8 @@ function genEachPage(theList, theListLength) {
     theReturn.push(page);
   }
 
-  //test
-  //console.log(theReturn);
-
   return theReturn;
 }
-
-/*
-axios.get('/user?ID=12345')
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-*/
 
 function main() {
   let pornArr = genEachPage(theList, theListLength);
@@ -63,7 +51,7 @@ function main() {
 
     })
     .then((individualActorArr) => {
-      //console.log(individualActorArr);
+
       return Promise.each(individualActorArr, (actorPage) => {
         return new Promise((resolve, reject) => {
 
@@ -77,9 +65,16 @@ function main() {
               for(var i=0; i<html.length; i++) {
                 let imgSrc = html[i].attribs['data-src'];
                 //console.log(imgSrc);
-                imgSrcArr.push(imgSrc);
+
+                if(html[i].attribs.hasOwnProperty('width')){
+                  continue;
+                }
+                else {
+                  imgSrcArr.push(imgSrc);
+                }
               }
 
+              //console.log(imgSrcArr);
               resolve(imgSrcArr);
             })
             .catch( (error) => {
