@@ -1,2 +1,2 @@
 #!/bin/sh
-mkdir ./upload/tmp
+mkdir upload/tmp -p

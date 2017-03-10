@@ -1,3 +1,3 @@
 #!/bin/sh
 
-rm ./upload/tmp/*
+rm upload/tmp -rf

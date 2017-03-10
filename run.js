@@ -7,8 +7,9 @@ const mkdirp = require('mkdirp');
 const util = require('util');
 
 //const theList = 'http://www.r18.com/videos/vod/movies/list/id=45425/pagesize=30/price=all/sort=popular/type=studio/page=';
-const theList = 'http://www.r18.com/videos/vod/movies/list/id=2001/pagesize=30/price=all/sort=popular/type=category/page=1/';
+const theList = 'http://www.r18.com/videos/vod/movies/list/id=2001/pagesize=30/price=all/sort=popular/type=category/page=';
 const theListLength = 1654;
+//const theListLength = 1;
 
 
 function genEachPage(theList, theListLength) {
@@ -24,11 +25,18 @@ function genEachPage(theList, theListLength) {
 
 function main() {
   let pornArr = genEachPage(theList, theListLength);
+
+  console.log("total page");
+  console.log(pornArr);
+
   return Promise.each(pornArr, (page) => {
     return new Promise((resolve, reject) => {
 
       axios.get(page)
         .then((pageList) => {
+          console.log("------ working on this list page --------");
+          console.log(page);
+
           $ = cheerio.load(pageList.data, {xmlMode: false});
           let html = $('ul.cmn-list-product01 li a').get();
           let individualActorArr = [];
@@ -66,11 +74,12 @@ function main() {
                 let imgSrc = html[i].attribs['data-src'];
                 //console.log(imgSrc);
 
-                if(html[i].attribs.hasOwnProperty('width')){
-                  continue;
+                let tmpArr = imgSrc.replace("http://pics.r18.com/", "").split("/");
+                if(tmpArr[3].includes('jp-')){
+                  imgSrcArr.push(imgSrc);
                 }
                 else {
-                  imgSrcArr.push(imgSrc);
+                  continue;
                 }
               }
 
@@ -97,7 +106,7 @@ function main() {
                       console.log(err);
                     }
                     else {
-                      console.log("save one img");
+                      console.log(`save: ${imgUrl}`);
                       resolve();
                     }
                   });
